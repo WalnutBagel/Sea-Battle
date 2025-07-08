@@ -1,24 +1,27 @@
 import pygame
 
-def draw_menu(screen):
+
+def draw_menu(screen, show_random_button=True):
     font = pygame.font.Font(None, 74)
     title = font.render("МОРСКОЙ БОЙ", True, (255, 255, 255))
 
-    # Определяем координаты кнопок
-    start_btn_rect = pygame.Rect(200, 300, 400, 50)
-    quit_btn_rect = pygame.Rect(200, 400, 400, 50)
+    # Координаты кнопок
+    buttons = {
+        'start': pygame.Rect(200, 300, 500, 50),
+        'quit': pygame.Rect(200, 400, 500, 50)
+    }
 
-    # Получаем координаты мыши
-    mouse_x, mouse_y = pygame.mouse.get_pos()
+    mouse_pos = pygame.mouse.get_pos()
 
-    # Определяем цвет (меняется при наведении)
-    start_color = (255, 255, 255) if start_btn_rect.collidepoint(mouse_x, mouse_y) else (200, 200, 200)
-    quit_color = (255, 255, 255) if quit_btn_rect.collidepoint(mouse_x, mouse_y) else (200, 200, 200)
+    # Цвета кнопок
+    colors = {
+        'start': (255, 255, 255) if buttons['start'].collidepoint(mouse_pos) else (200, 200, 200),
+        'quit': (255, 255, 255) if buttons['quit'].collidepoint(mouse_pos) else (200, 200, 200)
+    }
 
-    # Рендерим кнопки с цветом
-    start_btn = font.render("Начать игру", True, start_color)
-    quit_btn = font.render("Выйти", True, quit_color)
-
+    # Отрисовка
     screen.blit(title, (200, 100))
-    screen.blit(start_btn, (200, 300))
-    screen.blit(quit_btn, (200, 400))
+    screen.blit(font.render('Начать игру', True, colors['start']), (200, 300))
+    screen.blit(font.render('Выйти', True, colors['quit']), (200, 440))
+
+
