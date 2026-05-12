@@ -282,3 +282,31 @@ def is_game_over(grid):
         if 1 in row:
             return False
     return True
+
+
+
+def count_remaining_ships(grid):
+    """
+    Подсчитывает количество кораблей, у которых есть хотя бы одна неповрежденная клетка (1).
+    Возвращает словарь {размер_корабля: количество}.
+    """
+    grid_size = len(grid)
+    visited = set()
+    ships_count = {}
+
+    for r in range(grid_size):
+        for c in range(grid_size):
+            # Если клетка часть корабля и мы её еще не считали
+            if grid[r][c] in (1, 3) and (r, c) not in visited:
+                # Находим весь корабль
+                ship_cells = find_ship(grid, (r, c))
+                visited.update(ship_cells)
+                
+                # Проверяем, есть ли живые клетки (1)
+                # Если все клетки 3 - корабль убит, не считаем его
+                if any(grid[r][c] == 1 for (r, c) in ship_cells):
+                    size = len(ship_cells)
+                    ships_count[size] = ships_count.get(size, 0) + 1
+                    
+    return ships_count
+    
