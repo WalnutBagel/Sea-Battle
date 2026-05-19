@@ -16,6 +16,10 @@ def main():
     background = pygame.image.load("assets/images/background.png")
     background = pygame.transform.scale(background, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
+    # изображения кораблей (пока только одиночный)
+    ship_single_image = pygame.image.load("assets/images/ship_single.png").convert_alpha()
+    ship_single_image = pygame.transform.scale(ship_single_image, (cell_size, cell_size))
+
     # звуки
     pygame.mixer.music.load('assets/sounds/fon.mp3')
     pygame.mixer.music.set_volume(0.1)
@@ -123,7 +127,7 @@ def main():
         else:
             render_game(screen, left_grid_x, left_grid_y, right_grid_x,
                         right_grid_y, grid_size, cell_size, player_grid, computer_grid, 
-                        current_cells, SHIPS_TO_PLACE, shot_animations, game_phase, show_enemy_ships)
+                        current_cells, SHIPS_TO_PLACE, shot_animations, game_phase, show_enemy_ships, ship_single_image)
             shot_animations[:] = [a for a in shot_animations if a.active]
             
             if show_exit_confirm:

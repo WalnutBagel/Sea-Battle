@@ -149,14 +149,17 @@ def handle_player_click(cell, player_grid):
     else:
         player_grid[row][col] = 0
 
-def draw_ships(screen, player_grid, grid_x, grid_y, grid_size, cell_size=40, show_ships=True):
+def draw_ships(screen, player_grid, grid_x, grid_y, grid_size, cell_size=40, show_ships=True, ship_single_image=None):
     for row in range(grid_size):
         for col in range(grid_size):
             rect_x = grid_x + col * cell_size
             rect_y = grid_y + row * cell_size
             rect = pygame.Rect(rect_x, rect_y, cell_size, cell_size)
             if player_grid[row][col] == 1 and show_ships:
-                pygame.draw.rect(screen, (0, 255, 0), rect)
+                if ship_single_image:
+                    screen.blit(ship_single_image, (rect_x, rect_y))
+                else:
+                    pygame.draw.rect(screen, (0, 255, 0), rect)
             elif player_grid[row][col] == 3:
                 pygame.draw.rect(screen, (255, 0, 0), rect)
             elif player_grid[row][col] == 2:
