@@ -12,6 +12,10 @@ def main():
     pygame.display.set_caption('Морской бой!!!')
     clock = pygame.time.Clock()
 
+    # задний фон
+    background = pygame.image.load("assets/images/background.png")
+    background = pygame.transform.scale(background, (SCREEN_WIDTH, SCREEN_HEIGHT))
+
     # звуки
     pygame.mixer.music.load('assets/sounds/fon.mp3')
     pygame.mixer.music.set_volume(0.1)
@@ -110,7 +114,10 @@ def main():
                     player_turn = not hit
                 computer_turn_timer = computer_turn_delay + current_time
         # отрисовываем экран
-        screen.fill(BG_COLOR)# заливка фона
+        screen.blit(background, (0, 0))  # Рисуем задний фон
+        dark_overlay = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.SRCALPHA)
+        dark_overlay.fill((0, 0, 0, 100))
+        screen.blit(dark_overlay, (0, 0))
         if in_menu:
             draw_menu(screen)
         else:
