@@ -36,6 +36,7 @@ def main():
     game_phase = "placing"  # Возможные значения: "placing" (расстановка), "battle" (бой)
     running = True
     player_turn = True
+    show_enemy_ships = False
 
     # Флаг: показывать ли окно подтверждения выхода
     show_exit_confirm = False
@@ -58,10 +59,11 @@ def main():
                     in_menu,
                 )
             else:
-                is_dragging, start_cell, current_cells, player_turn, game_phase = process_game_events(
+                if not show_exit_confirm:
+                    is_dragging, start_cell, current_cells, player_turn, game_phase, show_enemy_ships = process_game_events(
                     event, mouse_x, mouse_y, left_grid_x, left_grid_y, right_grid_x,
                     right_grid_y, grid_size, cell_size, player_grid, computer_grid,
-                    current_cells, is_dragging, start_cell, SHIPS_TO_PLACE, player_turn, game_phase)
+                    current_cells, is_dragging, start_cell, SHIPS_TO_PLACE, player_turn, game_phase, show_enemy_ships)
                 if not player_turn:
                     computer_turn_timer = current_time + computer_turn_delay
                     computer_move_ready = False
@@ -114,11 +116,11 @@ def main():
         else:
             render_game(screen, left_grid_x, left_grid_y, right_grid_x,
                         right_grid_y, grid_size, cell_size, player_grid, computer_grid, 
-                        current_cells, SHIPS_TO_PLACE, shot_animations, game_phase)
+                        current_cells, SHIPS_TO_PLACE, shot_animations, game_phase, show_enemy_ships)
             shot_animations[:] = [a for a in shot_animations if a.active]
             
             if show_exit_confirm:
-                draw_exit_confirm(screen, "Выйти в меню? Игра завершится.")
+                draw_exit_confirm(screen, "Выйти в меню?\nИгра завершится.")
             # === Проверка окончания игры ===
             if game_phase == "battle":
                 if is_game_over(computer_grid) or is_game_over(player_grid):

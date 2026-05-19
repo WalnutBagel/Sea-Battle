@@ -1,6 +1,6 @@
 import pygame
 from game import draw_grid, draw_ships, can_place_ship, count_remaining_ships
-from settings import *
+from settings import SCREEN_WIDTH, SCREEN_HEIGHT, SHOW_ENEMY_TOGGLE_BUTTON
 
 
 
@@ -56,9 +56,13 @@ def draw_exit_confirm(screen, message="Выйти в главное меню?"):
     font_large = pygame.font.Font(None, 48)
     font_small = pygame.font.Font(None, 36)
     
-    # Текст вопроса
-    text = font_large.render(message, True, (255, 255, 255))
-    screen.blit(text, (box_x + box_w//2 - text.get_width()//2, box_y + 40))
+    # Текст вопроса (поддержка переносов строк)
+    lines = message.split('\n') if '\n' in message else [message]
+    y_offset = box_y + 40
+    for line in lines:
+        text = font_large.render(line, True, (255, 255, 255))
+        screen.blit(text, (box_x + box_w//2 - text.get_width()//2, y_offset))
+        y_offset += text.get_height() + 5  # +5 пикселей между строками
     
     # Кнопки
     mouse = pygame.mouse.get_pos()
@@ -81,13 +85,13 @@ def draw_exit_confirm(screen, message="Выйти в главное меню?"):
 
 
 def render_game(screen, left_grid_x, left_grid_y, right_grid_x, right_grid_y,grid_size,
-                cell_size, player_grid, computer_grid, current_cells, ships_to_place, animations, game_phase):
+                cell_size, player_grid, computer_grid, current_cells, ships_to_place, animations, game_phase, show_enemy_ships=False):
     # здесь позже будет игровая логикa
     # Рисуем сетки
     draw_grid(screen, left_grid_x, left_grid_y, grid_size=10, player="Игрок")
     draw_grid(screen, right_grid_x, right_grid_y, grid_size=10, player="Компьютер")
     draw_ships(screen, player_grid, left_grid_x, left_grid_y, grid_size, cell_size)
-    draw_ships(screen, computer_grid, right_grid_x, right_grid_y, grid_size, cell_size)
+    draw_ships(screen, computer_grid, right_grid_x, right_grid_y, grid_size, cell_size, show_ships=show_enemy_ships)
     # --- Выбор данных для списка кораблей ---
     if game_phase == "placing":
         # Фаза расстановки: показываем, что осталось поставить игроку
@@ -157,9 +161,19 @@ def render_game(screen, left_grid_x, left_grid_y, right_grid_x, right_grid_y,gri
     mouse_pos = pygame.mouse.get_pos()
     btn_color = (255, 100, 100) if menu_btn.collidepoint(mouse_pos) else (200, 50, 50)
     pygame.draw.rect(screen, btn_color, menu_btn, border_radius=8)
-    font = pygame.font.Font(None, 36)
-    btn_text = font.render("☰", True, (255, 255, 255))
-    screen.blit(btn_text, (menu_btn.x + 18, menu_btn.y + 5))
+    font = pygame.font.Font(None, 20)
+    btn_text = font.render("Меню", True, (255, 255, 255))
+    screen.blit(btn_text, (menu_btn.x + 8, menu_btn.y + 8))
+
+    # === КНОПКА "ПОКАЗАТЬ/СКРЫТЬ" (управляется настройкой) ===
+    if SHOW_ENEMY_TOGGLE_BUTTON:
+        toggle_btn = pygame.Rect(SCREEN_WIDTH - 250, 50, 200, 40)
+        mouse_pos = pygame.mouse.get_pos()
+        toggle_color = (200, 100, 100) if show_enemy_ships else (100, 100, 200)
+        pygame.draw.rect(screen, toggle_color, toggle_btn, border_radius=8)
+        font = pygame.font.Font(None, 30)
+        toggle_text = font.render('Скрыть' if show_enemy_ships else 'Показать', True, (255, 255, 255))
+        screen.blit(toggle_text, (toggle_btn.x + 30, toggle_btn.y + 10))
 
     for anim in animations:
         anim.draw(screen)

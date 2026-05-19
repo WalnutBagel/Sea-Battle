@@ -2,6 +2,9 @@
 SCREEN_WIDTH = 1100
 SCREEN_HEIGHT = 800
 BG_COLOR = (30, 30, 30) # Темно-серый фон
+SHOW_ENEMY_TOGGLE_BUTTON = False
+
+
 def get_default_ships():
     return {
         4: 1,  # один 4-палубный корабль
