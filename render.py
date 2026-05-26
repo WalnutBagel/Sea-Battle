@@ -85,13 +85,14 @@ def draw_exit_confirm(screen, message="Выйти в главное меню?"):
 
 
 def render_game(screen, left_grid_x, left_grid_y, right_grid_x, right_grid_y,grid_size,
-                cell_size, player_grid, computer_grid, current_cells, ships_to_place, animations, game_phase, show_enemy_ships=False, ship_single_image=None):
+                cell_size, player_grid, computer_grid, current_cells, ships_to_place, animations, game_phase, 
+                show_enemy_ships=False, ship_single_image=None, hit_image=None, dead_ship_image=None):
     # здесь позже будет игровая логикa
     # Рисуем сетки
     draw_grid(screen, left_grid_x, left_grid_y, grid_size=10, player="Игрок")
     draw_grid(screen, right_grid_x, right_grid_y, grid_size=10, player="Компьютер")
-    draw_ships(screen, player_grid, left_grid_x, left_grid_y, grid_size, cell_size, ship_single_image=ship_single_image)
-    draw_ships(screen, computer_grid, right_grid_x, right_grid_y, grid_size, cell_size, show_ships=show_enemy_ships, ship_single_image=ship_single_image)
+    draw_ships(screen, player_grid, left_grid_x, left_grid_y, grid_size, cell_size, ship_single_image=ship_single_image, hit_image=hit_image, dead_ship_image=dead_ship_image)
+    draw_ships(screen, computer_grid, right_grid_x, right_grid_y, grid_size, cell_size, show_ships=show_enemy_ships, ship_single_image=ship_single_image, hit_image=hit_image, dead_ship_image=dead_ship_image)
     # --- Выбор данных для списка кораблей ---
     if game_phase == "placing":
         # Фаза расстановки: показываем, что осталось поставить игроку
