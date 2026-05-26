@@ -16,10 +16,6 @@ def main():
     background = pygame.image.load("assets/images/background.png")
     background = pygame.transform.scale(background, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
-    # изображения кораблей (пока только одиночный)
-    ship_single_image = pygame.image.load("assets/images/ship_single.png").convert_alpha()
-    ship_single_image = pygame.transform.scale(ship_single_image, (cell_size, cell_size))
-
     # звуки
     pygame.mixer.music.load('assets/sounds/fon.mp3')
     pygame.mixer.music.set_volume(0.1)
@@ -39,6 +35,10 @@ def main():
 
     player_grid = init_player_grid(grid_size)
     computer_grid = generate_computer_ships(grid_size)
+
+    # изображения кораблей (пока только одиночный)
+    ship_single_image = pygame.image.load("assets/images/ship_single.png").convert_alpha()
+    ship_single_image = pygame.transform.scale(ship_single_image, (cell_size, cell_size))
 
     in_menu = True
     game_phase = "placing"  # Возможные значения: "placing" (расстановка), "battle" (бой)
